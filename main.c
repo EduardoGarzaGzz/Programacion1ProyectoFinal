@@ -92,7 +92,34 @@ void processInventario( ) {
 	} while ( opt != 's' );
 }
 
-void processVentas( ) { }
+void processVentas( ) {
+	char opt;
+	do {
+		printMenuAndGetOpt( "\nMenu de Ventas\n"
+		                    "-- 1) Alta de clientes\n"
+		                    "-- 2) Baja de clientes\n"
+		                    "-- 3) Buscar un cliente\n"
+		                    "-- 4) Generar ticket de venta\n"
+		                    "-- S) Regresar al menu principal\n", &opt );
+
+		switch ( opt ) {
+			case '1':
+				break;
+			case '2':
+				break;
+			case '3':
+				break;
+			case '4':
+				break;
+			default:
+				opt = ( char ) tolower( opt );
+				if ( opt != 's' )
+					printError( "ERROR: La opción es invalida favor de probar otra ves" );
+				break;
+		}
+
+	} while ( opt != 's' );
+}
 
 void processReportes( ) { }
 
