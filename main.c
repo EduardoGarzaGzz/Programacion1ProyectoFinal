@@ -3,9 +3,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include <wchar.h>
 #include <locale.h>
-#include <stdlib.h>
 
 void setGlobalConfig( );
 
@@ -32,7 +30,6 @@ int main( ) {
 		                    "-- 2) Ir a Ventas\n"
 		                    "-- 3) Ir a Reportes\n"
 		                    "-- S) Salir del programa\n", &opt );
-
 
 		switch ( opt ) {
 			case '1':
@@ -66,7 +63,34 @@ void printMenuAndGetOpt( char *menu, char *opt ) {
 	scanf( " %c", opt );
 }
 
-void processInventario( ) { }
+void processInventario( ) {
+	char opt;
+	do {
+		printMenuAndGetOpt( "\nMenu de Inventario\n"
+		                    "-- 1) Alta de articulo\n"
+		                    "-- 2) Baja de articulo\n"
+		                    "-- 3) Cambio de articulo\n"
+		                    "-- 4) Disponibilidad de articulo\n"
+		                    "-- S) Regresar al menu principal\n", &opt );
+
+		switch ( opt ) {
+			case '1':
+				break;
+			case '2':
+				break;
+			case '3':
+				break;
+			case '4':
+				break;
+			default:
+				opt = ( char ) tolower( opt );
+				if ( opt != 's' )
+					printError( "ERROR: La opción es invalida favor de probar otra ves" );
+				break;
+		}
+
+	} while ( opt != 's' );
+}
 
 void processVentas( ) { }
 
