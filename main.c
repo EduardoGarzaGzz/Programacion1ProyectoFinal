@@ -1,9 +1,32 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define MAX_SIZE_ARRAY 10
+#define MAX_SIZE_ARRAY 100
 
 #include <stdio.h>
 #include <ctype.h>
 #include <locale.h>
+
+struct Proveedor {
+	char nombreMarca[255];
+	char nombre[255];
+	char telefono[10];
+	char direccion[500];
+	char correo[255];
+};
+
+struct Refrigerador {
+	char code[5];
+	int inventario;
+	float precio;
+	char nombre[255];
+	char descripcion[500];
+	struct Proveedor Proveedor;
+} refrigeradores[MAX_SIZE_ARRAY];
+
+struct Cliente {
+	char nombre[255];
+	char correo[255];
+	struct Refrigerador refrigeradoresList[MAX_SIZE_ARRAY];
+};
 
 void setGlobalConfig( );
 
