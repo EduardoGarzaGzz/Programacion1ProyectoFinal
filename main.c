@@ -2,6 +2,7 @@
 #define MAX_SIZE_ARRAY 100
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <locale.h>
 
@@ -30,8 +31,6 @@ struct Cliente {
 
 void setGlobalConfig( );
 
-void printMenuAndGetOpt( char *menu, char *opt );
-
 void processInventario( );
 
 void processVentas( );
@@ -47,12 +46,15 @@ int main( ) {
 	char opt = 0;
 
 	do {
-		printMenuAndGetOpt( "Bienvenido a REFRIAPP (Proyecto final de programación 1)\n"
-		                    "-- Presione el numero indicado al inicio de cada opción --\n"
-		                    "-- 1) Ir a Inventario\n"
-		                    "-- 2) Ir a Ventas\n"
-		                    "-- 3) Ir a Reportes\n"
-		                    "-- S) Salir del programa\n", &opt );
+		system( "cls" );
+		printf( "Bienvenido a REFRIAPP (Proyecto final de programación 1)\n" );
+		printf( "-- Presione el numero indicado al inicio de cada opción --\n" );
+		printf( "-- 1) Ir a Inventario\n" );
+		printf( "-- 2) Ir a Ventas\n" );
+		printf( "-- 3) Ir a Reportes\n" );
+		printf( "-- 4) Ir a Clientes\n" );
+		printf( "-- S) Salir del programa\n" );
+		scanf( " %c", &opt );
 
 		switch ( opt ) {
 			case '1':
@@ -81,20 +83,17 @@ void setGlobalConfig( ) {
 	setlocale( LC_ALL, ".UTF8" );
 }
 
-void printMenuAndGetOpt( char *menu, char *opt ) {
-	printf( "%s", menu );
-	scanf( " %c", opt );
-}
-
 void processInventario( ) {
 	char opt;
 	do {
-		printMenuAndGetOpt( "\nMenu de Inventario\n"
-		                    "-- 1) Alta de articulo\n"
-		                    "-- 2) Baja de articulo\n"
-		                    "-- 3) Cambio de articulo\n"
-		                    "-- 4) Disponibilidad de articulo\n"
-		                    "-- S) Regresar al menu principal\n", &opt );
+		system( "cls" );
+		printf( "\nMenu de Inventario\n" );
+		printf( "-- 1) Alta de articulo\n" );
+		printf( "-- 2) Baja de articulo\n" );
+		printf( "-- 3) Cambio de articulo\n" );
+		printf( "-- 4) Disponibilidad de articulo\n" );
+		printf( "-- S) Regresar al menu principal\n" );
+		scanf( " %c", &opt );
 
 		switch ( opt ) {
 			case '1':
@@ -118,12 +117,14 @@ void processInventario( ) {
 void processVentas( ) {
 	char opt;
 	do {
-		printMenuAndGetOpt( "\nMenu de Ventas\n"
-		                    "-- 1) Alta de clientes\n"
-		                    "-- 2) Baja de clientes\n"
-		                    "-- 3) Buscar un cliente\n"
-		                    "-- 4) Generar ticket de venta\n"
-		                    "-- S) Regresar al menu principal\n", &opt );
+		system( "cls" );
+		printf( "\nMenu de Inventario\n" );
+		printf( "-- 1) Alta de clientes\n" );
+		printf( "-- 2) Baja de clientes\n" );
+		printf( "-- 3) Cambio de clientes\n" );
+		printf( "-- 4) Generar ticket de venta\n" );
+		printf( "-- S) Regresar al menu principal\n" );
+		scanf( " %c", &opt );
 
 		switch ( opt ) {
 			case '1':
@@ -147,12 +148,14 @@ void processVentas( ) {
 void processReportes( ) {
 	char opt;
 	do {
-		printMenuAndGetOpt( "\nMenu de Reportes\n"
-		                    "-- 1) Reporte de orden de compra\n"
-		                    "-- 2) Reporte de venta del dia\n"
-		                    "-- 3) Reporte generar saldos\n"
-		                    "-- 4) Generar ticket de venta\n"
-		                    "-- S) Regresar al menu principal\n", &opt );
+		system( "cls" );
+		printf( "\nMenu de Inventario\n" );
+		printf( "-- 1) Reporte de orden de compra\n" );
+		printf( "-- 2) Reporte de venta del dia\n" );
+		printf( "-- 3) Reporte generar saldos\n" );
+		printf( "-- 4) Generar ticket de venta\n" );
+		printf( "-- S) Regresar al menu principal\n" );
+		scanf( " %c", &opt );
 
 		switch ( opt ) {
 			case '1':
