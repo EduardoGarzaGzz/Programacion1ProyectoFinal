@@ -28,15 +28,24 @@ struct Refrigerador {
 	struct Proveedor proveedor;
 } refrigeradores[MAX_SIZE_ARRAY];
 
+int countClientes = 0;
 struct Cliente {
 	char nombre[255];
 	char correo[255];
 	struct Refrigerador refrigeradoresList[MAX_SIZE_ARRAY];
-};
+} clientes[MAX_SIZE_ARRAY];
+
+void saveProveedores();
+
+void saveClientes();
+
+void saveRefrigeradores();
 
 void setGlobalConfig();
 
 void readProveedores();
+
+void readClientes();
 
 void readRefrigeradores();
 
@@ -58,13 +67,12 @@ char *getCodigoRefrigerador(char *);
 
 char *getText();
 
-void saveRefrigeradores();
-
 int main() {
 	char opt = 0;
 	setGlobalConfig();
 	readProveedores();
 	readRefrigeradores();
+	readClientes();
 
 	do {
 		printf("Bienvenido a REFRIAPP (Proyecto final de programación 1)");
@@ -78,15 +86,19 @@ int main() {
 
 		switch ( opt ) {
 			case '1':
+				system("cls");
 				processInventario();
 				break;
 			case '2':
+				system("cls");
 				processVentas();
 				break;
 			case '3':
+				system("cls");
 				processReportes();
 				break;
 			case '4':
+				system("cls");
 				processClientes();
 				break;
 
@@ -124,10 +136,104 @@ void processInventario() {
 				agregarRefrigerador();
 				break;
 			case '2':
+				printf("Cual es el refrigerador que deseas dar de baja\n");
+				for ( int i = 0; i < countRefrigeradores; i++ )
+					printf("#%d %s\n", i + 1, refrigeradores[i].nombre);
+
+				do {
+					int iOpt;
+					scanf(" %d", &iOpt);
+					iOpt--;
+
+					if (iOpt > countRefrigeradores || iOpt < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					for ( int i = 0; i < countRefrigeradores; i++ )
+						if (iOpt == i) {
+							refrigeradores[i] = refrigeradores[i + 1];
+							iOpt++;
+						}
+
+					countRefrigeradores--;
+					saveRefrigeradores();
+					break;
+				} while ( 1 );
 				break;
-			case '3':
+			case '3': {
+				int iOpt;
+
+				printf("Cual es el refrigerador que deseas cambiar\n");
+				for ( int i = 0; i < countRefrigeradores; i++ )
+					printf("#%d %s\n", i + 1, refrigeradores[i].nombre);
+
+				do {
+					scanf(" %d", &iOpt);
+					iOpt--;
+
+					if (iOpt > countRefrigeradores || iOpt < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					break;
+				} while ( 1 );
+
+				printf("Código del refrigerador:");
+				getCodigoRefrigerador(refrigeradores[iOpt].code);
+
+				printf("Inventario inicial:");
+				scanf(" %d", &refrigeradores[iOpt].inventario);
+
+				printf("Precio unitario:");
+				scanf(" %f", &refrigeradores[iOpt].precio);
+
+				printf("Nombre:");
+				scanf(" %s", refrigeradores[iOpt].nombre);
+
+				printf("Descripcion:");
+				scanf(" %s", refrigeradores[iOpt].descripcion);
+
+				for ( int i = 0; i < countProveedores; i++ )
+					printf("#%d - %s\n", i + 1, proveedores[i].nombreMarca);
+
+				int opt = 0;
+				do {
+					scanf(" %d", &opt);
+
+					if (opt <= countProveedores) {
+						refrigeradores[iOpt].proveedor = proveedores[opt];
+						break;
+					} else
+						printError("ERROR: proveedor invalido.");
+
+				} while ( 1 );
+
+				saveRefrigeradores();
+				printf("\n");
+			}
 				break;
-			case '4':
+			case '4': {
+				int rCount = 0;
+				char textBusqueda[500];
+				struct Refrigerador r[MAX_SIZE_ARRAY];
+				printf("Buscar por código o nombre");
+				scanf(" %s", textBusqueda);
+
+				for ( int i = 0; i < countProveedores; i++ )
+					if (strcmp(refrigeradores[i].code, textBusqueda) == 0 ||
+					    strcmp(refrigeradores[i].nombre, textBusqueda) == 0) {
+						r[rCount] = refrigeradores[i];
+						rCount++;
+					}
+
+				if (rCount == 0)
+					printf("No hay resultados para la busqueda");
+				else
+					for ( int i = 0; i < rCount; i++ )
+						printf("#%d - %s Inventario: %d\n", i + 1, r[i].nombre, r[i].inventario);
+			}
 				break;
 			default:
 				opt = ( char ) tolower(opt);
@@ -151,9 +257,44 @@ void processVentas() {
 		scanf(" %c", &opt);
 
 		switch ( opt ) {
-			case '1':
+			case '1': {
+				printf("Agregar un nuevo cliente\n");
+				printf("Nombre: ");
+				scanf(" %s", clientes[countClientes].nombre);
+
+				printf("Correo: ");
+				scanf(" %s", clientes[countClientes].correo);
+
+				saveClientes();
+				countClientes++;
+			}
 				break;
-			case '2':
+			case '2': {
+				printf("Cual es el cliente que deseas dar de baja\n");
+				for ( int i = 0; i < countClientes; i++ )
+					printf("#%d %s\n", i + 1, clientes[i].nombre);
+
+				do {
+					int iOpt;
+					scanf(" %d", &iOpt);
+					iOpt--;
+
+					if (iOpt > countClientes || iOpt < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					for ( int i = 0; i < countClientes; i++ )
+						if (iOpt == i) {
+							clientes[i] = clientes[i + 1];
+							iOpt++;
+						}
+
+					countClientes--;
+					saveClientes();
+					break;
+				} while ( 1 );
+			}
 				break;
 			case '3':
 				break;
@@ -341,6 +482,26 @@ char *getText() {
 	return linep;
 }
 
+void saveProveedores() {
+	char finalPath[255] = { 0 };
+	FILE *fProveedor;
+
+	strcpy(finalPath, pathFiles);
+	strcat(finalPath, "\\proveedores.txt");
+
+	fProveedor = fopen(finalPath, "w");
+
+	for ( int i = 0; i < countProveedores; i++ )
+		fwrite(&proveedores[i], sizeof(struct Proveedor), 1, fProveedor);
+
+	if (fwrite != 0)
+		printf("Se guardo correctamente la información de proveedores\n");
+	else
+		printf("Error: No se guardo el archivo de proveedores\n");
+
+	fclose(fProveedor);
+}
+
 void saveRefrigeradores() {
 	char finalPath[255] = { 0 };
 	FILE *fRefrigerador;
@@ -348,14 +509,54 @@ void saveRefrigeradores() {
 	strcpy(finalPath, pathFiles);
 	strcat(finalPath, "\\refrigeradores.txt");
 
-	fRefrigerador = fopen(finalPath, "w+");
-	fwrite(&refrigeradores[countRefrigeradores], sizeof(struct Refrigerador), 1, fRefrigerador);
+	fRefrigerador = fopen(finalPath, "w");
 
-	if (fwrite != 0) {
+	for ( int i = 0; i < countRefrigeradores; i++ )
+		fwrite(&refrigeradores[i], sizeof(struct Refrigerador), 1, fRefrigerador);
+
+	if (fwrite != 0)
 		printf("Se guardo correctamente la información de refrigeradores\n");
-		countRefrigeradores++;
-	} else
+	else
 		printf("Error: No se guardo el archivo de refrigeradores\n");
 
 	fclose(fRefrigerador);
+}
+
+void saveClientes() {
+	char finalPath[255] = { 0 };
+	FILE *fCliente;
+
+	strcpy(finalPath, pathFiles);
+	strcat(finalPath, "\\clientes.txt");
+
+	fCliente = fopen(finalPath, "w");
+
+	for ( int i = 0; i < countRefrigeradores; i++ )
+		fwrite(&clientes[i], sizeof(struct Cliente), 1, fCliente);
+
+	if (fwrite != 0)
+		printf("Se guardo correctamente la información de clientes\n");
+	else
+		printf("Error: No se guardo el archivo de clientes\n");
+
+	fclose(fCliente);
+}
+
+void readClientes() {
+	char finalPath[255] = { 0 };
+	FILE *fCliente;
+
+	strcpy(finalPath, pathFiles);
+	strcat(finalPath, "\\clientes.txt");
+
+	fCliente = fopen(finalPath, "r");
+	if (fCliente == NULL) {
+		printError("ERROR: No se puede recuperar la información de clientes");
+		exit(1);
+	}
+
+	while ( fread(&clientes[countClientes], sizeof(struct Cliente), 1, fCliente) )
+		countClientes++;
+
+	fclose(fCliente);
 }
