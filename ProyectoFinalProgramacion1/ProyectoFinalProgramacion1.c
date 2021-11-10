@@ -30,6 +30,7 @@ struct Refrigerador {
 
 int countClientes = 0;
 struct Cliente {
+	int countRefrigeradoresList;
 	char nombre[255];
 	char correo[255];
 	struct Refrigerador refrigeradoresList[MAX_SIZE_ARRAY];
@@ -55,8 +56,6 @@ void processVentas();
 
 void processReportes();
 
-void processClientes();
-
 void printError(const char *err);
 
 void agregarRefrigerador();
@@ -80,7 +79,6 @@ int main() {
 		printf("-- 1) Ir a Inventario\n");
 		printf("-- 2) Ir a Ventas\n");
 		printf("-- 3) Ir a Reportes\n");
-		printf("-- 4) Ir a Clientes\n");
 		printf("-- S) Salir del programa\n");
 		scanf(" %c", &opt);
 
@@ -96,10 +94,6 @@ int main() {
 			case '3':
 				system("cls");
 				processReportes();
-				break;
-			case '4':
-				system("cls");
-				processClientes();
 				break;
 
 			default:
@@ -296,9 +290,95 @@ void processVentas() {
 				} while ( 1 );
 			}
 				break;
-			case '3':
+			case '3': {
+				int iOpt;
+
+				printf("Cual es el cliente que deseas modificar\n");
+				for ( int i = 0; i < countClientes; i++ )
+					printf("#%d %s\n", i + 1, clientes[i].nombre);
+
+				do {
+					scanf(" %d", &iOpt);
+					iOpt--;
+
+					if (iOpt > countClientes || iOpt < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					break;
+				} while ( 1 );
+
+				printf("\nNombre: ");
+				scanf(" %s", clientes[iOpt].nombre);
+
+				printf("Correo: ");
+				scanf(" %s", clientes[iOpt].correo);
+
+				saveClientes();
+				printf("\n");
+			}
 				break;
-			case '4':
+			case '4': {
+				int iClienteSelected;
+				printf("Seleccione un cliente\n");
+				for ( int i = 0; i < countClientes; i++ )
+					printf("#%d %s\n", i + 1, clientes[i].nombre);
+
+				do {
+					scanf(" %d", &iClienteSelected);
+					iClienteSelected--;
+
+					if (iClienteSelected > countClientes || iClienteSelected < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					break;
+				} while ( 1 );
+
+				clientes[iClienteSelected].countRefrigeradoresList = 0;
+				do {
+					int iRefri;
+					printf("Seleccione un item a agregar al ticket o para salir presione (0)\n");
+					for ( int i = 0; i < countRefrigeradores; i++ )
+						printf("#%d %s Precio: %.2f, Inventario: %d\n", i + 1, refrigeradores[i].nombre,
+						       refrigeradores[i].precio, refrigeradores[i].inventario);
+					scanf(" %d", &iRefri);
+					iRefri--;
+
+					if (iRefri == -1)
+						break;
+
+					if (iRefri > countRefrigeradores || iRefri < 0) {
+						printError("ERROR: Opción no valida");
+						continue;
+					}
+
+					if (refrigeradores[iRefri].inventario == 0)
+						printf("Lo sentimos no hay elementos disponibles de %s", refrigeradores[iRefri].nombre);
+					else {
+						int idx = clientes[iClienteSelected].countRefrigeradoresList;
+						clientes[iClienteSelected].refrigeradoresList[idx] = refrigeradores[iRefri];
+						clientes[iClienteSelected].countRefrigeradoresList++;
+						refrigeradores[iRefri].inventario--;
+					}
+
+				} while ( 1 );
+
+				float totalCosto = 0;
+				system("cls");
+				printf("========Ticket========\n");
+				for(int i = 0; i < clientes[iClienteSelected].countRefrigeradoresList; i++) {
+					struct Refrigerador r = clientes[iClienteSelected].refrigeradoresList[i];
+					printf("#%d %s === $%.2f\n", i + 1, r.nombre, r.precio);
+					totalCosto += r.precio;
+				}
+				printf("Total:   $%.2f\n", totalCosto);
+
+				saveRefrigeradores();
+				saveClientes();
+			}
 				break;
 			default:
 				opt = ( char ) tolower(opt);
@@ -338,10 +418,6 @@ void processReportes() {
 		}
 
 	} while ( opt != 's' );
-}
-
-void processClientes() {
-	printf("\nMenu de de clientes no implementado \n");
 }
 
 void printError(const char *err) {
