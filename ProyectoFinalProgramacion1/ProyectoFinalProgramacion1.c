@@ -33,8 +33,11 @@ struct Cliente {
 	int countRefrigeradoresList;
 	char nombre[255];
 	char correo[255];
+	char diaCompra[3];
 	struct Refrigerador refrigeradoresList[MAX_SIZE_ARRAY];
 } clientes[MAX_SIZE_ARRAY];
+
+int mkdir(const char *pathname);
 
 void saveProveedores();
 
@@ -212,7 +215,7 @@ void processInventario() {
 				int rCount = 0;
 				char textBusqueda[500];
 				struct Refrigerador r[MAX_SIZE_ARRAY];
-				printf("Buscar por código o nombre");
+				printf("Buscar por código o nombre: ");
 				scanf(" %s", textBusqueda);
 
 				for ( int i = 0; i < countProveedores; i++ )
@@ -368,8 +371,10 @@ void processVentas() {
 
 				float totalCosto = 0;
 				system("cls");
+				printf("Que dia es hoy (en numero): ");
+				scanf(" %s", clientes[iClienteSelected].diaCompra);
 				printf("========Ticket========\n");
-				for(int i = 0; i < clientes[iClienteSelected].countRefrigeradoresList; i++) {
+				for ( int i = 0; i < clientes[iClienteSelected].countRefrigeradoresList; i++ ) {
 					struct Refrigerador r = clientes[iClienteSelected].refrigeradoresList[i];
 					printf("#%d %s === $%.2f\n", i + 1, r.nombre, r.precio);
 					totalCosto += r.precio;
@@ -397,16 +402,74 @@ void processReportes() {
 		printf("-- 1) Reporte de orden de compra\n");
 		printf("-- 2) Reporte de venta del dia\n");
 		printf("-- 3) Reporte generar saldos\n");
-		printf("-- 4) Generar ticket de venta\n");
 		printf("-- S) Regresar al menu principal\n");
 		scanf(" %c", &opt);
 
 		switch ( opt ) {
-			case '1':
+			case '1': {
+				system("cls");
+				printf("\nGenerando orden de compra\n");
+
+				for ( int i = 0; i < countRefrigeradores; i++ )
+					if (refrigeradores[i].inventario <= 3)
+						printf("#%d comprar 12 unidades de %s\n", i + 1, refrigeradores[i].nombre);
+
+				char optAgregar;
+				printf("Desea aplicar la compra (y) cualquier otro caracter para no\n");
+				scanf(" %s", &optAgregar);
+
+				if (tolower(optAgregar) == 'y')
+					for ( int i = 0; i < countRefrigeradores; i++ )
+						if (refrigeradores[i].inventario <= 3) {
+							refrigeradores[i].inventario += 12;
+							printf("Se agregaron 12 unidades a %s\n", refrigeradores[i].nombre);
+						}
+			}
 				break;
-			case '2':
+			case '2': {
+				char diaHoy[3];
+				short siHayVentas = 0;
+				float total;
+				system("cls");
+				printf("Que dia es hoy (en numero):");
+				scanf(" %s", diaHoy);
+
+				printf("Reporte de ventas del dia de %s\n", diaHoy);
+				for ( int i = 0; i < countClientes; i++ )
+					if (strcmp(clientes[i].diaCompra, diaHoy) == 0) {
+						total = 0;
+
+						for ( int j = 0; j < clientes[i].countRefrigeradoresList; j++ )
+							total += clientes[i].refrigeradoresList[j].precio;
+
+						printf("#%d %s == Total: %.2f\n", i + 1, clientes[i].nombre, total);
+						siHayVentas = 1;
+					}
+
+				if (siHayVentas == 0)
+					printf("Hoy no se tuvo ventas\n");
+			}
 				break;
-			case '3':
+			case '3': {
+				float total;
+				short siHayVentas = 0;
+				system("cls");
+				printf("Reporte general de saldos\n");
+				for ( int i = 0; i < countClientes; i++ ) {
+					total = 0;
+
+					for ( int j = 0; j < clientes[i].countRefrigeradoresList; j++ )
+						total += clientes[i].refrigeradoresList[j].precio;
+
+					if (total != 0) {
+						printf("#%d %s == Total: %.2f\n", i + 1, clientes[i].nombre, total);
+						siHayVentas = 1;
+					}
+				}
+
+				if (siHayVentas == 0)
+					printf("Hoy no se tuvo ventas\n");
+			}
 				break;
 			case '4':
 				break;
@@ -626,6 +689,7 @@ void readClientes() {
 	strcat(finalPath, "\\clientes.txt");
 
 	fCliente = fopen(finalPath, "r");
+
 	if (fCliente == NULL) {
 		printError("ERROR: No se puede recuperar la información de clientes");
 		exit(1);

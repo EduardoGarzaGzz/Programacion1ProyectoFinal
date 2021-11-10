@@ -43,9 +43,13 @@ void addProveedor(
 		const char correo[255]
 );
 
+int mkdir(const char *pathname);
+
 void saveProveedores();
 
 void saveRefrigeradores();
+
+void saveClientes();
 
 int mkdir(const char *path);
 
@@ -72,6 +76,7 @@ int main() {
 	                proveedores[2]);
 
 	saveRefrigeradores();
+	saveClientes();
 }
 
 void addRefrigerador(const char *code, int inventario, float precio, const char *nombre,
@@ -145,4 +150,23 @@ void saveRefrigeradores() {
 		printf("Error: No se guardo el archivo de refrigeradores\n");
 
 	fclose(fRefrigerador);
+}
+
+void saveClientes() {
+	char finalPath[255] = { 0 };
+	FILE *fCliente;
+
+	strcpy(finalPath, pathFiles);
+	strcat(finalPath, "\\clientes.txt");
+
+	fCliente = fopen(finalPath, "w");
+
+	if (fCliente == NULL)
+		if (mkdir(pathFiles))
+			printf("Se creo el directorio %s", pathFiles);
+		else
+			printf("ERROR: No se pudo crear el directorio");
+
+
+	fclose(fCliente);
 }
