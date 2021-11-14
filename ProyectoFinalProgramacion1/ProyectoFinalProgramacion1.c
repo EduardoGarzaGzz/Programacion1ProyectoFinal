@@ -67,7 +67,11 @@ long lengthOfArray(const char *c);
 
 char *getCodigoRefrigerador(char *);
 
+char *getEmail(char *);
+
 char *getText();
+
+void convertToLower(const char *);
 
 int main() {
 	char opt = 0;
@@ -260,7 +264,7 @@ void processVentas() {
 				scanf(" %s", clientes[countClientes].nombre);
 
 				printf("Correo: ");
-				scanf(" %s", clientes[countClientes].correo);
+				getEmail(clientes[countClientes].correo);
 
 				saveClientes();
 				countClientes++;
@@ -414,9 +418,9 @@ void processReportes() {
 					if (refrigeradores[i].inventario <= 3)
 						printf("#%d comprar 12 unidades de %s\n", i + 1, refrigeradores[i].nombre);
 
-				char optAgregar;
-				printf("Desea aplicar la compra (y) cualquier otro caracter para no\n");
-				scanf(" %s", &optAgregar);
+				char optAgregar[3];
+				printf("Desea aplicar la compra (y) cualquier otro carácter para no\n");
+				scanf(" %s", optAgregar);
 
 				if (tolower(optAgregar) == 'y')
 					for ( int i = 0; i < countRefrigeradores; i++ )
@@ -538,6 +542,42 @@ char *getCodigoRefrigerador(char *code) {
 			printError("Error: El código tiene que ser de 5 caracteres");
 	}
 	return code;
+}
+
+char *getEmail(char *email) {
+	short isCodeValid = 0;
+	short isArroba;
+	int sizeEmail;
+	while ( isCodeValid == 0 ) {
+		scanf(" %s", email);
+		convertToLower(email);
+		sizeEmail = lengthOfArray(email);
+
+		isArroba = 0;
+		for ( int i = 0; i < sizeEmail; i++ ) {
+			char c = *(email + i);
+			if (( int ) c == 64) { // 64 es el código ascii del @
+				isArroba = 1;
+				break;
+			}
+		}
+		/*
+		 * 46 = .
+		 * 99 = c
+		 * 111 = o
+		 * 109 = m
+		 * */
+		if (isArroba)
+			if (strcmp((email + (sizeEmail - 4)), ".com") == 0)
+//			if (( int ) (email + (sizeEmail - 3)) == 46 && ( int ) (email + (sizeEmail - 2)) == 99 &&
+//			    ( int ) (email + (sizeEmail - 1)) == 111 && ( int ) (email + (sizeEmail)) == 109)
+				isCodeValid = 1;
+			else
+				printError("ERROR: El correo debe terminar con .com");
+		else
+			printError("ERROR: El correo debe contener una @");
+	}
+	return email;
 }
 
 long lengthOfArray(const char *arr) {
@@ -699,4 +739,13 @@ void readClientes() {
 		countClientes++;
 
 	fclose(fCliente);
+}
+
+void convertToLower(const char *c) {
+	char str[1000] = { 0 };
+
+	for ( int i = 0; i < lengthOfArray(c); i++ )
+		str[i] = ( char ) tolower(*(c + i));
+
+	strcpy(( char * ) c, str);
 }

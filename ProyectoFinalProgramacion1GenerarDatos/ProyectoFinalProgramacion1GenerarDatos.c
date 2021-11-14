@@ -51,7 +51,11 @@ void saveRefrigeradores();
 
 void saveClientes();
 
-int mkdir(const char *path);
+void addRefrigerador(const char* code, int inventario, float precio, const char* nombre,
+	const char* descripcion, struct Proveedor proveedor);
+
+void addProveedor(const char nombreMarca[255], const char nombre[255], const char telefono[10],
+	const char direccion[500], const char correo[255]);
 
 int main() {
 	setlocale(LC_ALL, ".UTF-8");
@@ -74,6 +78,28 @@ int main() {
 	addRefrigerador("535SMH", 10, 1721.0f, "Whirlpool 25.2-Cubic-Foot French Door WRF535SMH Refrigerator",
 	                "The Whirlpool French Door WRF535SMH scores 4.0 out of 5 which ties it at No. 3 for both Best Refrigerators of 2021 and Best French Door Refrigerators. The popular French door layout is noted by experts as convenient and offering ample space at eye level to browse fresh foods.",
 	                proveedores[2]);
+
+	addRefrigerador("01AAA", 0, 100.0f, "TEST1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("02AAA", 0, 100.0f, "TEST2", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("03AAA", 0, 100.0f, "TEST3", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("04AAA", 0, 100.0f, "TEST4", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("05AAA", 0, 100.0f, "TEST5", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("06AAA", 0, 100.0f, "TEST6", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("07AAA", 0, 100.0f, "TEST7", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("08AAA", 0, 100.0f, "TEST8", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("09AAA", 0, 100.0f, "TEST9", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("10AAA", 0, 100.0f, "TEST10", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("11AAA", 0, 100.0f, "TEST11", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("12AAA", 0, 100.0f, "TEST12", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("13AAA", 0, 100.0f, "TEST13", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("14AAA", 0, 100.0f, "TEST14", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("15AAA", 0, 100.0f, "TEST15", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("16AAA", 0, 100.0f, "TEST16", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("17AAA", 0, 100.0f, "TEST17", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("18AAA", 0, 100.0f, "TEST18", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("19AAA", 0, 100.0f, "TEST19", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+	addRefrigerador("20AAA", 0, 100.0f, "TEST20", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book", proveedores[0]);
+
 
 	saveRefrigeradores();
 	saveClientes();
